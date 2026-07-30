@@ -18,7 +18,7 @@ const App = () => {
   
   const [trips, setTrips] = useState([])
   const [destinations, setDestinations] = useState([])
-  const API_URL = 'http://localhost:3001'
+  const API_URL = import.meta.env.PROD ? 'https://server-0ml7.onrender.com' : '/api'
   const [user, setUser] = useState(null)
 
   useEffect(() => {
