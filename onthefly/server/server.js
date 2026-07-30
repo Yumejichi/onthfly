@@ -19,10 +19,15 @@ app.use(cors({
     methods: 'GET, POST, PUT, DELETE, PATCH',
     credentials: true
 }))
+app.set('trust proxy', 1)
 app.use(session({
     secret: 'codepath',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        secure: true,
+        sameSite: 'none'
+    }
 }))
 app.get('/', (req, res) => {
     res.status(200).send('<h1 style="text-align: center; margin-top: 50px;">✈️ OnTheFly API</h1>')
