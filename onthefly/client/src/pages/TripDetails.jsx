@@ -4,7 +4,7 @@ import ActivityBtn from '../components/ActivityBtn'
 import DestinationBtn from '../components/DestinationBtn'
 import '../css/TripDetails.css'
 
-const TripDetails = ( { data } ) => {
+const TripDetails = ( { data, api_url } ) => {
 
     const { id } = useParams()
     const [activities, setActivities] = useState([])
@@ -19,6 +19,8 @@ const TripDetails = ( { data } ) => {
         end_date: '',
         total_cost: 0.0
     })
+
+    const [travelers, setTravelers] = useState([])
 
     useEffect(() => {
         const result = data.filter(item => item.id === parseInt(id))[0]
@@ -39,13 +41,13 @@ const TripDetails = ( { data } ) => {
 
     useEffect(() => {
         const fetchActivities = async () => {
-            const response = await fetch('/api/activities/' + id)
+            const response = await fetch(`${api_url}/api/activities/${id}`)
             const data = await response.json()
             setActivities(data)
         }
 
         const fetchDestinations = async () => {
-            const response = await fetch('/api/trips-destinations/destinations/' + id)
+            const response = await fetch(`${api_url}/api/trips-destinations/destinations/${id}`)
             const data = await response.json()
             setDestinations(data)
         }
@@ -53,6 +55,16 @@ const TripDetails = ( { data } ) => {
         fetchActivities()
         fetchDestinations()
     }, [data, id])
+
+    useEffect(() => {
+        const fetchTravelers = async () => {
+            const response = await fetch(`${api_url}/api/users-trips/users/${id}`)
+            const data = await response.json()
+            setTravelers(data)
+        }
+
+        fetchTravelers()
+    }, [data, id, api_url])
 
     return (
         <div className='out'>
@@ -100,6 +112,18 @@ const TripDetails = ( { data } ) => {
                     }
                     <br/>
                     <Link to={'../../destination/new/' + id}><button className='addDestinationBtn'>+ Add Destination</button></Link>
+                </div>
+
+                <div className='travelers'>
+                    {
+                        travelers && travelers.length > 0 ?
+                        travelers.map((traveler, index) => 
+                            <p key={index} style={{ textAlign: 'center', lineHeight: 0, paddingTop: 20}}>
+                                {traveler.username}</p>
+                        ) : ''
+                    }
+                    <br />
+                    <Link to={'/users/add/' + id}><button className='addActivityBtn'>+ Add Traveler</button></Link>
                 </div>
             </div>
             
