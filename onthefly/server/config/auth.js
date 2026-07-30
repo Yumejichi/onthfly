@@ -4,7 +4,7 @@ import { pool } from './database.js';
 const options = {
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  callbackURL: 'https://client-60ey.onrender.com/auth/github/callback',
+  callbackURL: 'https://server-0ml7.onrender.com/auth/github/callback',
 };
 
 const verify = async (accessToken, refreshToken, profile, callback) => {
